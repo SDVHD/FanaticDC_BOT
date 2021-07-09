@@ -21,6 +21,9 @@ client.on('message', message => {
 	else if (message.content === `${prefix}beep`) {
 		message.channel.send('Boop.');
 	}
+	else if (message.content === `${prefix}server`) {
+		message.channel.send(`Servername: ${message.guild.name}`);
+	}
 });
 
 // login to Discord with your app's token
