@@ -42,24 +42,17 @@ client.once('ready', () => {
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).trim().split(' ');
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
-	if (message.content === `${prefix}ping`) {
-		message.channel.send('Pong');
-	}
-	else if (message.content === `${prefix}beep`) {
-		message.channel.send('Boop');
-	}
-	else if (message.content === `${prefix}server`) {
-		message.channel.send(`Servername: ${message.guild.name}`);
-	}
-	else if (command === 'args-info') {
-		if (!args.length) {
-			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-		}
+	if (!client.commands.has(command)) return;
 
-		message.channel.send(`Command name: ${command}\nArguments: ${args}`);
+	try {
+		client.commands.get(command).execute(message, args);
+	}
+	catch (error) {
+		console.error(error);
+		message.reply('there was an error trying to execute that command!');
 	}
 });
 
